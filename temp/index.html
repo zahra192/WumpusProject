@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wumpus World Agent</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <h1>🐉 Wumpus World - Logic Agent</h1>
+
+    <!-- ─── Controls Panel ─── -->
+    <div class="controls">
+
+        <div class="input-group">
+            <label>Rows:</label>
+            <input type="number" id="rows" value="4" min="3" max="8">
+        </div>
+
+        <div class="input-group">
+            <label>Cols:</label>
+            <input type="number" id="cols" value="4" min="3" max="8">
+        </div>
+
+        <button onclick="startNewGame()">🎮 New Game</button>
+        <button onclick="autoMove()">🤖 Auto Move</button>
+
+    </div>
+
+    <!-- ─── Metrics Dashboard ─── -->
+    <div class="metrics">
+        <span>🧠 Inference Steps: <strong id="steps">0</strong></span>
+        <span>📋 KB Clauses: <strong id="kb_size">0</strong></span>
+        <span>📍 Agent Position: <strong id="position">(0,0)</strong></span>
+    </div>
+
+    <!-- ─── Status Message ─── -->
+    <div class="status" id="status_msg">
+        Press "New Game" to start!
+    </div>
+
+    <!-- ─── Legend ─── -->
+    <div class="legend">
+        <span class="legend-box agent"></span> Agent &nbsp;
+        <span class="legend-box safe"></span> Safe &nbsp;
+        <span class="legend-box visited"></span> Visited &nbsp;
+        <span class="legend-box unknown"></span> Unknown &nbsp;
+        <span class="legend-box danger"></span> Danger
+    </div>
+
+    <!-- ─── Grid ─── -->
+    <div id="grid-container"></div>
+
+    <script src="{{ url_for('static', filename='agent.js') }}"></script>
+
+</body>
+</html>
