@@ -86,7 +86,7 @@ WumpusProject/
 
 **Step 1:** Clone the repository
 ```bash
-git clone https://github.com/yourusername/WumpusProject.git
+git clone https://github.com/zahra192/WumpusProject.git
 cd WumpusProject
 ```
 
@@ -120,6 +120,5 @@ http://127.0.0.1:5000
 
 ## 👩‍💻 Developer
 
-**Your Name**
 Mawaddat Zahra
 AI Course 
