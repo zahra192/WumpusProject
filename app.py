@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, render_template, request
 import random
 
-app = Flask(__name__, template_folder='temp')
+app = Flask(__name__, template_folder='temp', static_folder='Static')
 
 # ─── Global Game State ───────────────────────────────────────────
 game = {}
@@ -60,21 +60,21 @@ def new_game():
     grid[0][0]['safe']    = True
     grid[0][0]['visited'] = True
 
-    # Place Wumpus randomly (not at start, not adjacent to start)
+    # Get all neighbors of start cell
+    start_neighbors = get_neighbors(0, 0, rows, cols)
+
+    # Place Wumpus — NOT at start or its neighbors
     while True:
         wr = random.randint(0, rows - 1)
         wc = random.randint(0, cols - 1)
-        # Keep wumpus away from (0,0) and its neighbors
-        start_neighbors = get_neighbors(0, 0, rows, cols)
         if (wr, wc) != (0, 0) and (wr, wc) not in start_neighbors:
             grid[wr][wc]['has_wumpus'] = True
             break
 
-    # Place Pits randomly (not at start, not adjacent to start)
+    # Place Pits — NOT at start or its neighbors
     num_pits = max(1, (rows * cols) // 5)
     placed = 0
     attempts = 0
-    start_neighbors = get_neighbors(0, 0, rows, cols)
     while placed < num_pits and attempts < 100:
         pr = random.randint(0, rows - 1)
         pc = random.randint(0, cols - 1)
@@ -107,9 +107,7 @@ def new_game():
     # Tell KB about starting cell
     kb_tell(0, 0)
 
-    # Always mark (0,0) neighbors as safe at start
-    # Because pits/wumpus are never placed adjacent to start
-    start_neighbors = get_neighbors(0, 0, rows, cols)
+    # Mark all start neighbors safe — pits/wumpus never placed here
     for nr, nc in start_neighbors:
         if (nr, nc) not in game['safe_cells']:
             game['safe_cells'].append((nr, nc))
@@ -246,9 +244,9 @@ def move():
     kb_tell(new_row, new_col)
 
     percepts = []
-    if cell['breeze']: percepts.append('Breeze')
-    if cell['stench']: percepts.append('Stench')
-    if not percepts:   percepts.append('None')
+    if cell['breeze']: percepts.append('Breeze 💨')
+    if cell['stench']: percepts.append('Stench 💀')
+    if not percepts:   percepts.append('None ✅')
 
     game['status_msg'] = f'Moved to ({new_row},{new_col}). Percepts: {", ".join(percepts)}'
 
